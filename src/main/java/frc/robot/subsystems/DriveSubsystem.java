@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
 
 import frc.robot.subsystems.SwerveModule;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class DriveSubsystem { 
+public class DriveSubsystem extends SubsystemBase { 
     private final SwerveModule frontLeft;
     private final SwerveModule frontRight;
     private final SwerveModule backLeft;
@@ -23,5 +26,14 @@ public class DriveSubsystem {
         frontRight.stop();
         backLeft.stop();
         backRight.stop();
+    }
+
+    public void setModuleStates(SwerveModuleState[] desiredStates)
+    {
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 5);
+        frontLeft.setDesiredState(desiredStates[0]);
+        frontRight.setDesiredState(desiredStates[1]);
+        backLeft.setDesiredState(desiredStates[2]);
+        backRight.setDesiredState(desiredStates[3]);
     }
 }

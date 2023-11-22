@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.*;
+import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,15 +18,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(DriverConstants.controllerPort);
-  private final CommandXboxController m_operatorController =
-      new CommandXboxController(OperatorConstants.controllerPort);
+  DriveSubsystem driveSubsystem = new DriveSubsystem();
+    // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController driver = new CommandXboxController(DriverConstants.controllerPort);
+  private final CommandXboxController operator = new CommandXboxController(OperatorConstants.controllerPort);
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, driver.getRawAxis(4), driver.getRawAxis(0), driver.getRawAxis(5), false));
     // Configure the trigger bindings
     configureBindings();
   }
