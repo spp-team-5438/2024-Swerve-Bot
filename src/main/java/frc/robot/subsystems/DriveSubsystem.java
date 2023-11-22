@@ -30,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] desiredStates)
     {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 5);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);

@@ -21,20 +21,20 @@ import frc.robot.components.*;
  */
 public final class Constants {
   public static Motor[] frontL = {
-    new Motor(1, MotorType.kBrushless, false), /* movement motor */
+    new Motor(3, MotorType.kBrushless, false), /* movement motor */
     new Motor(2, MotorType.kBrushless, false)  /* turning motor */
   };
   public static Motor[] frontR = {
-    new Motor(3, MotorType.kBrushless, false), /* movement motor */
+    new Motor(5, MotorType.kBrushless, false), /* movement motor */
     new Motor(4, MotorType.kBrushless, false)  /* turning motor */
   };
   public static Motor[] backL = {
-    new Motor(5, MotorType.kBrushless, false), /* movement motor */
-    new Motor(6, MotorType.kBrushless, false)  /* turning motor */
+    new Motor(1, MotorType.kBrushless, false), /* movement motor */
+    new Motor(8, MotorType.kBrushless, false)  /* turning motor */
   };
   public static Motor[] backR = {
     new Motor(7, MotorType.kBrushless, false), /* movement motor */
-    new Motor(8, MotorType.kBrushless, false)  /* turning motor */
+    new Motor(6, MotorType.kBrushless, false)  /* turning motor */
   };
 
   public static double deadband = 0.05;

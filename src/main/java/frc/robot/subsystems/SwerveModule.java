@@ -24,6 +24,10 @@ public class SwerveModule {
         driveMotor = new CANSparkMax(movement.id, movement.type);
         turnMotor = new CANSparkMax(rotate.id, rotate.type);
 
+        /* reset to default */
+        driveMotor.restoreFactoryDefaults();
+        turnMotor.restoreFactoryDefaults();
+
         /* initialize motor encoders */
         driveEncoder = driveMotor.getEncoder();
         turnEncoder = turnMotor.getEncoder();
@@ -31,6 +35,11 @@ public class SwerveModule {
         /* reverse motors */
         driveMotor.setInverted(movement.isReversed);
         turnMotor.setInverted(rotate.isReversed);
+
+        driveMotor.burnFlash();
+        turnMotor.burnFlash();
+
+        driveEncoder.setPosition(0);
     }
 
     public void stop()
