@@ -37,7 +37,7 @@ public final class Constants {
     new Motor(6, MotorType.kBrushless, false)  /* turning motor */
   };
 
-  public static double deadband = 0.05;
+  public static double deadband = 0.21;
   public static final double trackWidth = Units.inchesToMeters(26.25);
   public static final double wheelBase = Units.inchesToMeters(26.25);
 

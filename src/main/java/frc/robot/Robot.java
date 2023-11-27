@@ -54,10 +54,10 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    DriveCommand driveCommand = new DriveCommand(driveSubsystem, driver.getRawAxis(0),
-      driver.getRawAxis(1), driver.getRawAxis(4), false);
+    DriveCommand driveCommand = new DriveCommand(driveSubsystem, driver.getRawAxis(5)/3,
+      driver.getRawAxis(4)/3, driver.getRawAxis(0), false);
 
-      driveCommand.execute();
+    // driveCommand.execute();
 
   }
 

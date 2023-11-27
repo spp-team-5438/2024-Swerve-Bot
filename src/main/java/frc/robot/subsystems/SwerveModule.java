@@ -17,6 +17,7 @@ public class SwerveModule {
 
     private boolean reversed;
     private double offset; 
+    private Rotation2d lastAngle;
 
     public SwerveModule(Motor movement, Motor rotate)
     {
@@ -55,13 +56,17 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState state)
     {
-        if (Math.abs(state.speedMetersPerSecond / 5) < 0.001) // Physical Max Meters Per Second
-        {
+        if (Math.abs(state.speedMetersPerSecond) < 0.001) { // Physical Max Meters Per Second
             stop();
             return;
         }
         state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(state.speedMetersPerSecond / 5);
-        turnMotor.set(turnEncoder.getPosition()); //TBD: Implement PID Controller
+        driveMotor.set(state.speedMetersPerSecond);
+
+        if (lastAngle == null)
+            lastAngle = getState().angle;
+        // turnMotor.set((Math.abs(state.speedMetersPerSecond) //TODO: Implement PID Controller
+            // <= (4.5 / 0.01) ? lastAngle : state.angle).getRadians());
+        lastAngle = getState().angle;
     }
 }

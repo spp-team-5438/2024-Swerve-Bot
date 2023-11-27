@@ -20,7 +20,11 @@ public class DriveSubsystem extends SubsystemBase {
         backRight = new SwerveModule(Constants.backR[0], Constants.backR[1]);
     }
 
-    public void stopModule()
+    @Override
+    public void periodic()
+    {}
+
+    public void stopModules()
     {
         frontLeft.stop();
         frontRight.stop();
@@ -30,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] desiredStates)
     {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 1);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4.5);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
