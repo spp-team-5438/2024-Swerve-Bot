@@ -56,5 +56,11 @@ public final class Constants {
 
   public static class DriverConstants {
     public static final int controllerPort = 0;
+  };
+
+  public static class PneumaticConstants {
+    public static final int pneumaticPort = 10;
+    public static final int lowerLimit = 80;
+    public static final int upperLimit = 110;
   }
 }
