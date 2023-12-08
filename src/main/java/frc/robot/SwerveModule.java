@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -32,9 +30,14 @@ public class SwerveModule {
     // private CANCoder angleEncoder;
     private AnalogInput angleEncoder;
 
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
+        Constants.Swerve.driveKS,
+        Constants.Swerve.driveKV,
+        Constants.Swerve.driveKA
+    );
 
-    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
+    public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants)
+    {
         anglePidController = new PIDController(0.1, 0.0, 0.0);
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
@@ -60,46 +63,65 @@ public class SwerveModule {
         lastAngle = getState().angle;
     }
     
-    public double getOutput() {
+    public double getOutput()
+    {
         return mAngleMotor.get();
     }
 
-    public void setDesiredState(SwerveModuleState desiredState){
-        /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
+    public void setDesiredState(SwerveModuleState desiredState)
+    {
+        /* This is a custom optimize function, since default WPILib optimize
+         * assumes continuous controller which CTRE and Rev onboard is not
+         */
         desiredState = CTREModuleState.optimize(desiredState, getState().angle); 
         setAngle(desiredState);
         setSpeed(desiredState);
     }
 
-    private void setSpeed(SwerveModuleState desiredState){
-        double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
+    private void setSpeed(SwerveModuleState desiredState)
+    {
+        double percentOutput = desiredState.speedMetersPerSecond
+            / Constants.Swerve.maxSpeed;
         mDriveMotor.set(percentOutput);
     }
 
-    private void setAngle(SwerveModuleState desiredState){
-        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
+    private void setAngle(SwerveModuleState desiredState)
+    {
+        // Prevent rotating module if speed is less then 1%. Prevents Jittering.
+        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= 
+            (Constants.Swerve.maxSpeed * 0.01)) ?
+            lastAngle : desiredState.angle;
 
-        // mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), Constants.Swerve.angleGearRatio));
-        // pidController.setReference(Conversions.degreesToSparkMax(angle.getDegrees(), Constants.Swerve.angleGearRatio), CANSparkMax.ControlType.kPosition);
-        double output = anglePidController.calculate(mAngleEncoder.getPosition(), Conversions.degreesToSparkMax(angle.getDegrees(), Constants.Swerve.angleGearRatio));
+        double output = anglePidController.calculate(
+            mAngleEncoder.getPosition(), Conversions.degreesToSparkMax(
+                angle.getDegrees(),
+                Constants.Swerve.angleGearRatio));
         mAngleMotor.set(output);
         lastAngle = angle;
     }
 
-    public Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(Conversions.SparkMaxToDegrees(mAngleEncoder.getPosition(), Constants.Swerve.angleGearRatio));
+    public Rotation2d getAngle()
+    {
+        return Rotation2d.fromDegrees(Conversions.SparkMaxToDegrees(
+            mAngleEncoder.getPosition(), Constants.Swerve.angleGearRatio));
     }
 
-    public Rotation2d getEncoder(){
-        return Rotation2d.fromRadians((angleEncoder.getVoltage() / RobotController.getVoltage5V()) * 2 * Math.PI);
+    public Rotation2d getEncoder()
+    {
+        return Rotation2d.fromRadians((angleEncoder.getVoltage()
+            / RobotController.getVoltage5V()) * 2 * Math.PI);
     }
 
-    public void resetToAbsolute(){
-        double absolutePosition = Conversions.degreesToSparkMax(getEncoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
+    public void resetToAbsolute()
+    {
+        double absolutePosition = Conversions.degreesToSparkMax(
+            getEncoder().getDegrees() - angleOffset.getDegrees(),
+            Constants.Swerve.angleGearRatio);
         mAngleEncoder.setPosition(absolutePosition);
     }
 
-    private void configAngleMotor(){
+    private void configAngleMotor()
+    {
         mAngleMotor.restoreFactoryDefaults();
         // mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
@@ -107,25 +129,30 @@ public class SwerveModule {
         resetToAbsolute();
     }
 
-    private void configDriveMotor(){        
+    private void configDriveMotor()
+    {
         mDriveMotor.restoreFactoryDefaults();
         // mDriveMotor.configAllSettings(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.setInverted(Constants.Swerve.driveMotorInvert);
         mDriveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
-        // might do later for auto
         // mDriveMotor.setSelectedSensorPosition(0);
     }
 
-    public SwerveModuleState getState(){
-        return new SwerveModuleState(
-            Conversions.sparkMaxToMPS(mDriveEncoder.getVelocity(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio), 
+    public SwerveModuleState getState()
+    {
+        return new SwerveModuleState(Conversions.sparkMaxToMPS(
+            mDriveEncoder.getVelocity(),
+            Constants.Swerve.wheelCircumference,
+            Constants.Swerve.driveGearRatio), 
             getAngle()
         ); 
     }
 
-    public SwerveModulePosition getPosition(){
+    public SwerveModulePosition getPosition()
+    {
         return new SwerveModulePosition(
-            Conversions.sparkMaxToMeters(mDriveEncoder.getPosition(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio), 
+            Conversions.sparkMaxToMeters(mDriveEncoder.getPosition(),
+            Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio), 
             getAngle()
         );
     }
