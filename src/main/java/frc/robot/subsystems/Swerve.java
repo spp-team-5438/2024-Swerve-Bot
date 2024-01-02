@@ -1,27 +1,31 @@
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-
-import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
+
+    private Field2d field = new Field2d();
 
     public Swerve() {
         /* Sets up pidgeon2 */
@@ -46,6 +50,19 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(
             Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            this::resetOdometry,
+            this::getSpeeds,
+            this::driveRobotRelative, // FIX LATER
+            Constants.Swerve.pathFollowerConfig,
+            this
+        );
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
+
+        SmartDashboard.putData("Field", field);
     }
 
     public void drive(Translation2d translation, double rotation,
@@ -63,12 +80,22 @@ public class Swerve extends SubsystemBase {
                 translation.getY(), 
                 rotation)
         );
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,
-            Constants.Swerve.maxSpeed);
-
-        for (SwerveModule mod : mSwerveMods)
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber]);
+        setModuleStates(swerveModuleStates);
     }    
+
+    // Untested
+    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds)
+    {
+        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+    }
+
+    // Untested
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds)
+    {
+       // ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02); // discretize method undefined??
+       SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+       setModuleStates(swerveModuleStates);
+    }
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates)
@@ -88,6 +115,11 @@ public class Swerve extends SubsystemBase {
     public void resetOdometry(Pose2d pose)
     {
         swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
+    }
+
+    public ChassisSpeeds getSpeeds()
+    {
+      return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());  
     }
 
     public SwerveModuleState[] getModuleStates()
@@ -129,6 +161,8 @@ public class Swerve extends SubsystemBase {
     public void periodic()
     {
         swerveOdometry.update(getYaw(), getModulePositions());  
+
+        field.setRobotPose(getPose());
 
         for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber(
