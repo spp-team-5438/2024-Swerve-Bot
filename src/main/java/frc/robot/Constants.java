@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -132,14 +129,6 @@ public final class Constants {
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
         }
-
-        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(driveKP, driveKI, driveKD), // Translation constants
-            new PIDConstants(angleKP, angleKI, angleKD), // Rotation constants 
-            maxSpeed,
-            trackWidth,
-            new ReplanningConfig()
-            );
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
