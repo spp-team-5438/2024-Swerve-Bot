@@ -11,6 +11,8 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    public static final boolean test = true;
+
     public static final double stickDeadbandXR = 0;
     public static final double stickDeadbandYR = 0;
     public static final double stickDeadbandXL = 0;

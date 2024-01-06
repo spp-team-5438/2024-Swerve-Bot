@@ -43,9 +43,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis) / shuffle.foo(shuffle.speed), 
-                () -> -driver.getRawAxis(strafeAxis) / shuffle.foo(shuffle.speed), 
-                () -> -driver.getRawAxis(rotationAxis) / shuffle.foo(shuffle.speed), 
+                () -> -driver.getRawAxis(translationAxis) / shuffle.foo(shuffle.speed, 1.6), 
+                () -> -driver.getRawAxis(strafeAxis) / shuffle.foo(shuffle.speed, 1.6), 
+                () -> -driver.getRawAxis(rotationAxis) / shuffle.foo(shuffle.speed, 1.6), 
                 () -> robotCentric.getAsBoolean()
             )
         );

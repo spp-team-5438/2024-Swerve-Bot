@@ -37,11 +37,11 @@ public class TeleopSwerve extends CommandBase {
     public void execute() {
         /* Get Values, Deadband*/
         double translationVal = MathUtil.applyDeadband(
-            translationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXL));
+            translationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXL, 0));
         double strafeVal = MathUtil.applyDeadband(
-            strafeSup.getAsDouble(), shuffle.foo(shuffle.deadBandYL));
+            strafeSup.getAsDouble(), shuffle.foo(shuffle.deadBandYL, 0));
         double rotationVal = MathUtil.applyDeadband(
-            rotationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXR));
+            rotationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXR, 0));
 
         /* Drive */
         s_Swerve.drive(

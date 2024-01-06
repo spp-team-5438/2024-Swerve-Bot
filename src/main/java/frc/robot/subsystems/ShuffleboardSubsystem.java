@@ -37,11 +37,15 @@ public class ShuffleboardSubsystem {
       tab.add("deadBand Change", Constants.stickDeadbandYR).withWidget(BuiltInWidgets.kNumberSlider)
          .withProperties(Map.of("min", 0, "max", 0.5, "blockIncrement", 0.01))
          .getEntry();
-      
 
-   // gets the value of speed divisor
-   public double foo(GenericEntry get) {
-      return get.getDouble(1.0);
+   // gets the value of any entry you pass to it 
+   public double foo(GenericEntry get, double baseValue) {
+      return get.getDouble(baseValue);
+   }
+
+   // sets the value of any entry you pass to it
+   public void bar(GenericEntry set, double value) {
+      set.setDouble(value);
    }
  }
 
