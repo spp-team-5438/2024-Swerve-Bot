@@ -39,20 +39,18 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
 
-    /*Shuffleboard */
-    private final Shuffleboard shuffleboard = new Shuffleboard();
-
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
-    private final int aButton = XboxController.Button.kA.value;
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(
         driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(
         driver, XboxController.Button.kLeftBumper.value);
+    
+    private final JoystickButton followPathButton = new JoystickButton(driver, XboxController.Button.kX.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -106,6 +104,8 @@ public class RobotContainer {
 
             AutoBuilder.followPathWithEvents(path).schedule();
        }));
+
+       followPathButton.onTrue(followSamplePath("Test Path"));
     }
 
     /**
@@ -117,5 +117,11 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
         //return new exampleAuto(s_Swerve);
         return autoChooser.getSelected();
+    }
+
+    public Command followSamplePath(String pathName)
+    {
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+        return AutoBuilder.followPathWithEvents(path);
     }
 }
