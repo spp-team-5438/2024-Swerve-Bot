@@ -15,6 +15,9 @@ public final class Constants {
 
     public static int shooterMotorL = 0;
     public static int shooterMotorR = 0;
+    public static final class Shooter{
+        public static final int height = 24; //height of shooter (inches)
+    }
 
     public static final class Swerve {
         public static final int pigeonID = 9;

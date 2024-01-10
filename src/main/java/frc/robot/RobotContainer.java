@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -10,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -23,7 +20,7 @@ import frc.robot.subsystems.*;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer extends CommandBase{
+public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
@@ -41,9 +38,13 @@ public class RobotContainer extends CommandBase{
         driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton shoot = new JoystickButton(operator, activateShooter);
 
+    private final JoystickButton setAutoAim = new JoystickButton(
+        operator, PS4Controller.Button.kCross.value);
+
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    ShooterSubsystem shooter = new ShooterSubsystem();
+    public final ShooterSubsystem shooter = new ShooterSubsystem();
+
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -71,6 +72,8 @@ public class RobotContainer extends CommandBase{
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         shoot.onTrue(new InstantCommand(() -> ShooterCommand.shoot(shooter,1)));
+
+        setAutoAim.onTrue(new InstantCommand(() -> shooter.isAutoRunning = !shooter.isAutoRunning ));
     }
 
     /**
