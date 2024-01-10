@@ -18,6 +18,10 @@ public final class Constants {
     public static final double stickDeadbandXL = 0;
     public static final double stickDeadbandYL = 0;
 
+    public static final class Shooter {
+        public static final int height = 24; //height of shooter (inches)
+    }
+
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
