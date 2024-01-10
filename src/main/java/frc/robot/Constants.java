@@ -13,6 +13,9 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.18;
 
+    public static int shooterMotorL = 0;
+    public static int shooterMotorR = 0;
+
     public static final class Swerve {
         public static final int pigeonID = 9;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
