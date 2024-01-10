@@ -18,7 +18,6 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    ShuffleboardSubsystem shuffle = new ShuffleboardSubsystem();
 
     public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup,
         DoubleSupplier strafeSup, DoubleSupplier rotationSup,
@@ -37,11 +36,11 @@ public class TeleopSwerve extends CommandBase {
     public void execute() {
         /* Get Values, Deadband*/
         double translationVal = MathUtil.applyDeadband(
-            translationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXL, 0));
+            translationSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandXL, 0));
         double strafeVal = MathUtil.applyDeadband(
-            strafeSup.getAsDouble(), shuffle.foo(shuffle.deadBandYL, 0));
+            strafeSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandYL, 0));
         double rotationVal = MathUtil.applyDeadband(
-            rotationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXR, 0));
+            rotationSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandXR, 0));
 
         /* Drive */
         s_Swerve.drive(

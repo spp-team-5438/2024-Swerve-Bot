@@ -11,12 +11,12 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-    public static final boolean test = true;
-
-    public static final double stickDeadbandXR = 0;
-    public static final double stickDeadbandYR = 0;
-    public static final double stickDeadbandXL = 0;
-    public static final double stickDeadbandYL = 0;
+    public static final class deadBand {
+        public static final double stickXR = 0;
+        public static final double stickYR = 0;
+        public static final double stickXL = 0;
+        public static final double stickYL = 0;
+    }
 
     public static final class Swerve {
         public static final int pigeonID = 1;
@@ -151,4 +151,7 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    public static final int intakeMotorID = 10;
+    public static final double intakeMotorSpeed = 1;
 }
