@@ -50,4 +50,10 @@ public class TeleopSwerve extends CommandBase {
             true
         );
     }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+
+    }
 }

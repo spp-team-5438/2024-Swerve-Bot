@@ -32,4 +32,10 @@ public class AutoAimCommand extends CommandBase {
         shooter.setAngle((min + max) / 2);
     }
 
+    @Override
+    public void end(boolean interrupted)
+    {
+
+    }
+
 }

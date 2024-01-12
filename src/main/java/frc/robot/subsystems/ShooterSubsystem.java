@@ -16,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public CANSparkMax motorL = new CANSparkMax(Constants.shooterMotorL, MotorType.kBrushless);
     public CANSparkMax motorR = new CANSparkMax(Constants.shooterMotorR, MotorType.kBrushless);
-    private CANSparkMax pistonMotor = new CANSparkMax(0, MotorType.kBrushless);
+    public CANSparkMax pistonMotor = new CANSparkMax(0, MotorType.kBrushless);
 
     private PIDController pistonPIDController = new PIDController(0, 0, 0);
     private SparkMaxAbsoluteEncoder pistonEncoder = pistonMotor.getAbsoluteEncoder(Type.kDutyCycle);

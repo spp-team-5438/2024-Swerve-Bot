@@ -71,7 +71,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        shoot.onTrue(new InstantCommand(() -> ShooterCommand.shoot(shooter,1)));
+        shoot.onTrue(new ShooterCommand(shooter, activateShooter));
 
         setAutoAim.onTrue(new InstantCommand(() -> shooter.isAutoRunning = !shooter.isAutoRunning ));
     }
