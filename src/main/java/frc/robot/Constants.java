@@ -11,16 +11,24 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-    public static final boolean test = true;
+    public static final class Xbox {
+        public static final double deadbandXR = 0;
+        public static final double deadbandYR = 0;
+        public static final double deadbandXL = 0;
+        public static final double deadbandYL = 0;
+    }
 
-    public static final double stickDeadbandXR = 0;
-    public static final double stickDeadbandYR = 0;
-    public static final double stickDeadbandXL = 0;
-    public static final double stickDeadbandYL = 0;
+    public static final class PS4 {
+        public static final double deadbandXR = 0;
+        public static final double deadbandYR = 0;
+        public static final double deadbandXL = 0;
+        public static final double deadbandYL = 0;
+    }
 
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
+        public static final double speedDivisor = 1.6;
 
         public static final COTSFalconSwerveConstants chosenModule =
             COTSFalconSwerveConstants.SDSMK4i(
