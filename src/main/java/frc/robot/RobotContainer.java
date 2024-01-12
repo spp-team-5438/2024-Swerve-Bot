@@ -74,6 +74,8 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
+
+        NamedCommands.registerCommand("TestCommand", getAutonomousCommand());
     }
 
     /**
@@ -86,24 +88,6 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
        // aButton.onTrue(new InstantCommand(() -> ));
-
-       // Create and follow an on-the-fly path
-       SmartDashboard.putData("On-the-fly path", Commands.runOnce(() ->
-       {
-            Pose2d currentPose = s_Swerve.getPose();
-
-            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-            Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(2, 0)), new Rotation2d());
-
-            List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-            PathPlannerPath path = new PathPlannerPath(
-                bezierPoints,
-                new PathConstraints(4, 4, Units.degreesToRadians(360), Units.degreesToRadians(540)),
-                new GoalEndState(0, currentPose.getRotation())
-            );
-
-            AutoBuilder.followPathWithEvents(path).schedule();
-       }));
 
        followPathButton.onTrue(followSamplePath("Test Path"));
     }
