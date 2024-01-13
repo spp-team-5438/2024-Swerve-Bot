@@ -18,6 +18,10 @@ public final class Constants {
         public static final double stickYL = 0;
     }
 
+    public static class intakeVoltageConstants {
+        public static final double maximumIntakeVoltage = 0;
+    }
+
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
@@ -153,5 +157,5 @@ public final class Constants {
     }
 
     public static final int intakeMotorID = 10;
-    public static final double intakeMotorSpeed = 1;
+    public static double intakeMotorSpeed = 1;
 }

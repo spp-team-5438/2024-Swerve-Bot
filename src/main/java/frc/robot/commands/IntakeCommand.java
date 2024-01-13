@@ -6,6 +6,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public final class IntakeCommand extends CommandBase {
     public static void driveIntake(IntakeSubsystem s_Intake) {
-        s_Intake.intakeMotor.set(Constants.intakeMotorSpeed);
+        IntakeSubsystem.intakeMotor.set(Constants.intakeMotorSpeed);
+
+        if (IntakeSubsystem.currentVoltage > Constants.intakeVoltageConstants.maximumIntakeVoltage)
+            IntakeSubsystem.stopMotor();
     }
 }
