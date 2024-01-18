@@ -36,6 +36,7 @@ public class RobotContainer {
         driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(
         driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton light = new JoystickButton(driver, aButton);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -65,7 +66,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        //aButton.onTrue(new InstantCommand(() -> ));
+        light.onTrue(new InstantCommand(() -> LEDCommand.setStripColor(12, 255, 255, 0)));
     }
 
     /**
