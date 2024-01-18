@@ -55,8 +55,16 @@ public class Swerve extends SubsystemBase {
             this::getPose,
             this::resetOdometry,
             this::getSpeeds,
-            this::driveRobotRelative, // FIX LATER
+            this::driveRobotRelative,
             Constants.Swerve.pathFollowerConfig,
+            () -> // Lambda that controls when path should be mirrored for red alliance.
+            {
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent())
+                    return alliance.get() == DriverStation.Alliance.Red;
+
+                return false;
+            },
             this
         );
 
