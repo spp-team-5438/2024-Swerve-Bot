@@ -66,7 +66,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        light.onTrue(new InstantCommand(() -> LEDCommand.setStripColor(12, 255, 255, 0)));
+        light.onTrue(new InstantCommand(() -> LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(12, 255, 255, 0))));
     }
 
     /**
