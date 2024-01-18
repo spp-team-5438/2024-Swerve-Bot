@@ -87,7 +87,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-       // aButton.onTrue(new InstantCommand(() -> ));
 
        followPathButton.onTrue(followSamplePath("Test Path"));
     }
@@ -106,6 +105,6 @@ public class RobotContainer {
     public Command followSamplePath(String pathName)
     {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-        return AutoBuilder.followPathWithEvents(path);
+        return AutoBuilder.followPath(path);
     }
 }
