@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     // Update the limelight
-    m_robotContainer.limelight.updateValues();
-    m_robotContainer.limelight.logToSmartDashboard();
+    m_robotContainer.s_limelight.updateValues();
+    m_robotContainer.s_limelight.logToSmartDashboard();
   }
 
   @Override
@@ -96,8 +96,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // Update the limelight
-    m_robotContainer.limelight.updateValues();
-    m_robotContainer.limelight.logToSmartDashboard();
+    m_robotContainer.s_limelight.updateValues();
+    m_robotContainer.s_limelight.logToSmartDashboard();
   }
 
   @Override
