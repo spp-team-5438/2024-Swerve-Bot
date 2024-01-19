@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 public class LEDSubsystem {
     public static AddressableLED sponsorStrip1;
 
-    public void LED(int port, int length) {
+    public LEDSubsystem(int port, int length) {
         sponsorStrip1 = new AddressableLED(port);
         AddressableLEDBuffer sponsorStrip1Buffer = new AddressableLEDBuffer(length);
         sponsorStrip1.setLength(length);
