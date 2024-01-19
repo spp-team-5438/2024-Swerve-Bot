@@ -5,10 +5,28 @@ import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public final class IntakeCommand extends CommandBase {
-    public static void driveIntake(IntakeSubsystem s_Intake) {
-        IntakeSubsystem.intakeMotor.set(Constants.intakeMotorSpeed);
 
-        if (IntakeSubsystem.currentVoltage > Constants.intakeVoltageConstants.maximumIntakeVoltage)
-            IntakeSubsystem.stopMotor();
+    private IntakeSubsystem intakeSubsystem;
+
+    public IntakeCommand(IntakeSubsystem intakeSubsystem)
+    {
+        this.intakeSubsystem = intakeSubsystem;
+    }
+
+    @Override
+    public void execute()
+    {
+        intakeSubsystem.currentVoltage = intakeSubsystem.getVoltage();
+
+        if (intakeSubsystem.currentVoltage < Constants.IntakeConstants.maximumIntakeVoltage)
+            intakeSubsystem.intakeMotor.set(Constants.IntakeConstants.maxIntakeSpeed);
+        else 
+            intakeSubsystem.stopMotor();
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+
     }
 }

@@ -18,8 +18,12 @@ public final class Constants {
         public static final double stickYL = 0;
     }
 
-    public static class intakeVoltageConstants {
+    public static class IntakeConstants {
+        public static final double maxIntakeSpeed = 1; // replace later
         public static final double maximumIntakeVoltage = 0;
+        public static final int intakeMotorID = 10;
+
+        public static final int feedMotorID = 0; // TODO: Get feed motor value
     }
 
     public static final class Swerve {
@@ -156,6 +160,5 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
-    public static final int intakeMotorID = 10;
-    public static double intakeMotorSpeed = 1;
+
 }
