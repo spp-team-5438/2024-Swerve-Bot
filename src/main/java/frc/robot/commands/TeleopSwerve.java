@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShuffleboardSubsystem;
 
 
 public class TeleopSwerve extends CommandBase {    
@@ -35,11 +36,11 @@ public class TeleopSwerve extends CommandBase {
     public void execute() {
         /* Get Values, Deadband*/
         double translationVal = MathUtil.applyDeadband(
-            translationSup.getAsDouble(), Constants.stickDeadband);
+            translationSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandXL, 0));
         double strafeVal = MathUtil.applyDeadband(
-            strafeSup.getAsDouble(), Constants.stickDeadband);
+            strafeSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandYL, 0));
         double rotationVal = MathUtil.applyDeadband(
-            rotationSup.getAsDouble(), Constants.stickDeadband);
+            rotationSup.getAsDouble(), ShuffleboardSubsystem.Instance.getEntry(ShuffleboardSubsystem.Instance.deadBandXR, 0));
 
         /* Drive */
         s_Swerve.drive(
