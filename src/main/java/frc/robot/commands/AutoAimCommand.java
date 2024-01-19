@@ -29,7 +29,7 @@ public class AutoAimCommand extends CommandBase {
         double min = (180/Math.PI)*Math.atan(heightDif/distance);
         double max = min + v;
         
-        shooter.setAngle((min + max) / 2);
+        shooter.setSpeakerAngle((min + max) / 2);
     }
 
     @Override

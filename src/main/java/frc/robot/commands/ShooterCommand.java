@@ -15,8 +15,8 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void execute()
     {
-        shooter.motorL.set(speed);
-        shooter.motorR.set(speed);
+        shooter.speakerMotorBottom.set(speed);
+        shooter.speakerMotorTop.set(speed);
     }
 
     @Override
