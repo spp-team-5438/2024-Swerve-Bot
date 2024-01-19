@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 /**
  * This class is where the bulk of the robot should be declared. Since 
@@ -33,7 +34,10 @@ public class RobotContainer {
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
     private final int aButton = XboxController.Button.kA.value;
+    private final int rightBumper = XboxController.Button.kRightBumper.value;
     private final int PS4SquareButton = PS4Controller.Button.kSquare.value;
+
+    public double speedDivisor;
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(
@@ -41,6 +45,7 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(
         driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton light = new JoystickButton(driver, aButton);
+    private final JoystickButton halfSpeed = new JoystickButton(driver, rightBumper);
     private final JoystickButton intakeButton = new JoystickButton(operator, PS4SquareButton);
 
     /* Subsystems */
@@ -53,9 +58,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis) / shuffle.getEntry(shuffle.speed, 1.6), 
-                () -> -driver.getRawAxis(strafeAxis) / shuffle.getEntry(shuffle.speed, 1.6), 
-                () -> -driver.getRawAxis(rotationAxis) / shuffle.getEntry(shuffle.speed, 1.6), 
+                () -> -driver.getRawAxis(translationAxis) / (shuffle.getEntry(shuffle.speed, 1.6) / speedDivisor), 
+                () -> -driver.getRawAxis(strafeAxis) / (shuffle.getEntry(shuffle.speed, 1.6) / speedDivisor), 
+                () -> -driver.getRawAxis(rotationAxis) / (shuffle.getEntry(shuffle.speed, 1.6) / speedDivisor), 
                 () -> robotCentric.getAsBoolean()
             )
         );
@@ -75,6 +80,9 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         light.onTrue(new InstantCommand(() -> LEDSubsystem.sponsorStrip1.setData(LEDCommand.setStripColor(12, 255, 255, 0))));
         intakeButton.onTrue(new InstantCommand(() -> new IntakeCommand(s_Intake)));
+
+        halfSpeed.onTrue(new InstantCommand(() -> speedDivisor = 2));
+        halfSpeed.onFalse(new InstantCommand(() -> speedDivisor = 1));
     }
 
     /**
