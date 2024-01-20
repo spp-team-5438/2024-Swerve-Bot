@@ -49,16 +49,15 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    ShuffleboardSubsystem shuffle = new ShuffleboardSubsystem();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis) / shuffle.foo(shuffle.speed, 1.6), 
-                () -> -driver.getRawAxis(strafeAxis) / shuffle.foo(shuffle.speed, 1.6), 
-                () -> -driver.getRawAxis(rotationAxis) / shuffle.foo(shuffle.speed, 1.6), 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
             )
         );

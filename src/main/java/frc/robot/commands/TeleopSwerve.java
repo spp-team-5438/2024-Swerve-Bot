@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShuffleboardSubsystem;
 
 
 public class TeleopSwerve extends CommandBase {    
@@ -20,7 +19,6 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    ShuffleboardSubsystem shuffle = new ShuffleboardSubsystem();
 
     public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup,
         DoubleSupplier strafeSup, DoubleSupplier rotationSup,
@@ -39,11 +37,11 @@ public class TeleopSwerve extends CommandBase {
     public void execute() {
         /* Get Values, Deadband*/
         double translationVal = MathUtil.applyDeadband(
-            translationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXL, 0));
+            translationSup.getAsDouble(), Constants.stickDeadbandXL);
         double strafeVal = MathUtil.applyDeadband(
-            strafeSup.getAsDouble(), shuffle.foo(shuffle.deadBandYL, 0));
+            strafeSup.getAsDouble(), Constants.stickDeadbandYL);
         double rotationVal = MathUtil.applyDeadband(
-            rotationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXR, 0));
+            rotationSup.getAsDouble(), Constants.stickDeadbandXR);
 
         /* Drive */
         /*s_Swerve.drive(
