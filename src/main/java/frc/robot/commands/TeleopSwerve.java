@@ -8,7 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShuffleboardSubsystem;
 
@@ -45,23 +45,12 @@ public class TeleopSwerve extends CommandBase {
             rotationSup.getAsDouble(), shuffle.foo(shuffle.deadBandXR, 0));
 
         /* Drive */
-        /*s_Swerve.drive(
+        s_Swerve.drive(
             new Translation2d(translationVal,
                 strafeVal).times(Constants.Swerve.maxSpeed), 
             rotationVal * Constants.Swerve.maxAngularVelocity, 
             !robotCentricSup.getAsBoolean(), 
             true
-        ); */
-
-        ChassisSpeeds robotSpeeds = new ChassisSpeeds(
-            translationVal * Constants.Swerve.maxSpeed,
-            strafeVal * Constants.Swerve.maxSpeed,
-            rotationVal * Constants.Swerve.maxAngularVelocity
         );
-
-        if (!robotCentricSup.getAsBoolean())
-            s_Swerve.driveFieldRelative(robotSpeeds);
-        else
-            s_Swerve.driveRobotRelative(robotSpeeds);
     }
 }
