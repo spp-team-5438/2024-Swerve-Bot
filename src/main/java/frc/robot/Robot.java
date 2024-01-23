@@ -4,9 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Limelight;
@@ -34,10 +32,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
-    for (int port = 5800; port <= 5807; port++) {
-      PortForwarder.add(port, "limelight.local", port);
-    }
   }
 
   /**
@@ -79,7 +73,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     // Update the limelight
     m_robotContainer.s_limelight.updateValues();
-    m_robotContainer.s_limelight.logToSmartDashboard();
   }
 
   @Override
@@ -98,7 +91,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // Update the limelight
     m_robotContainer.s_limelight.updateValues();
-    m_robotContainer.s_limelight.logToSmartDashboard();
   }
 
   @Override
