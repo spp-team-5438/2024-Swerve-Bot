@@ -81,7 +81,7 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-       followPathButton.onTrue(followSamplePath("Test Path"));
+       followPathButton.onTrue(followSamplePath("Straight Path"));
     }
 
     /**
