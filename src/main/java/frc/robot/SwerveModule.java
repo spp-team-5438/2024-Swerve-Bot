@@ -126,7 +126,6 @@ public class SwerveModule {
     {
         mAngleMotor.restoreFactoryDefaults();
         // mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
-        mAngleMotor.setInverted(moduleConstants.angleMotorInvert);
         mAngleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
         resetToAbsolute();
     }
@@ -135,7 +134,6 @@ public class SwerveModule {
     {
         mDriveMotor.restoreFactoryDefaults();
         // mDriveMotor.configAllSettings(Robot.ctreConfigs.swerveDriveFXConfig);
-        mDriveMotor.setInverted(moduleConstants.driveMotorInvert);
         mDriveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
         // mDriveMotor.setSelectedSensorPosition(0);
     }
