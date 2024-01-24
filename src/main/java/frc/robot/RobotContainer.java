@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,12 +25,12 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
-    private final int aButton = XboxController.Button.kA.value;
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(
@@ -37,8 +38,15 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(
         driver, XboxController.Button.kLeftBumper.value);
 
+    /* Operator Buttons */
+    private final JoystickButton climbUp = new JoystickButton(
+        operator, PS4Controller.Button.kL1.value);
+    private final JoystickButton climbDown = new JoystickButton(
+        operator, PS4Controller.Button.kR1.value);
+
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -65,6 +73,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        climbUp.onTrue(new InstantCommand(() -> climbSubsystem.setClimbMotors(0.2)));
+        climbDown.onTrue(new InstantCommand(() -> climbSubsystem.setClimbMotors(-0.2)));
         //aButton.onTrue(new InstantCommand(() -> ));
     }
 
