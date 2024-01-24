@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,10 +37,6 @@ public final class Constants {
         /* Module Gear Ratios */
         public static final double driveGearRatio = chosenModule.driveGearRatio;
         public static final double angleGearRatio = chosenModule.angleGearRatio;
-
-        /* Motor Inverts */
-        public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
-        public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
 
         /* Angle Encoder Invert */
         public static final boolean canCoderInvert = chosenModule.canCoderInvert;
@@ -97,7 +93,8 @@ public final class Constants {
             public static final int encoderID = 0;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(303.0);
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
+                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID,
+                  angleOffset);
         }
 
         /* Front Right Module - Module 1 */
@@ -107,7 +104,8 @@ public final class Constants {
             public static final int encoderID = 1;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(15.3);
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
+                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID,
+                  angleOffset);
         }
         
         /* Back Left Module - Module 2 */
@@ -117,7 +115,8 @@ public final class Constants {
             public static final int encoderID = 2;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(328.0);
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
+                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID,
+                  angleOffset);
         }
 
         /* Back Right Module - Module 3 */
@@ -127,7 +126,8 @@ public final class Constants {
             public static final int encoderID = 3;
             public static final Rotation2d angleOffset = Rotation2d.fromDegrees(89.0);
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID, angleOffset);
+                new SwerveModuleConstants(driveMotorID, angleMotorID, encoderID,
+                  angleOffset);
         }
     }
 

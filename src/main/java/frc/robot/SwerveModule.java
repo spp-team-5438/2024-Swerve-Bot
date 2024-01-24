@@ -21,6 +21,7 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
+    private SwerveModuleConstants moduleConstants;
 
     private CANSparkMax mAngleMotor;
     private CANSparkMax mDriveMotor;
@@ -41,6 +42,7 @@ public class SwerveModule {
         anglePidController = new PIDController(0.1, 0.0, 0.0);
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
+        this.moduleConstants = moduleConstants;
         
         /* Angle Encoder Config */
         angleEncoder = new AnalogInput(moduleConstants.encoderId);
@@ -124,7 +126,6 @@ public class SwerveModule {
     {
         mAngleMotor.restoreFactoryDefaults();
         // mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
-        mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
         resetToAbsolute();
     }
@@ -133,7 +134,6 @@ public class SwerveModule {
     {
         mDriveMotor.restoreFactoryDefaults();
         // mDriveMotor.configAllSettings(Robot.ctreConfigs.swerveDriveFXConfig);
-        mDriveMotor.setInverted(Constants.Swerve.driveMotorInvert);
         mDriveMotor.setIdleMode(Constants.Swerve.driveNeutralMode);
         // mDriveMotor.setSelectedSensorPosition(0);
     }
