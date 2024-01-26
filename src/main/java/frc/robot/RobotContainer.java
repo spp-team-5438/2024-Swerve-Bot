@@ -1,11 +1,16 @@
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
+import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -15,11 +20,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-
-import frc.robot.autos.*;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.autos.exampleAuto;
+import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Swerve;
 
 /**
  * This class is where the bulk of the robot should be declared. Since 
@@ -82,7 +85,8 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-       followPathButton.onTrue(followSamplePath("Straight Path"));
+        followPathButton.onTrue(followSamplePath("Straight Path"));
+        //alignWithSpeakerButton.onTrue(alignWithSpeaker());
     }
 
     /**
@@ -98,6 +102,32 @@ public class RobotContainer {
     public Command followSamplePath(String pathName)
     {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+        return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose())).andThen(AutoBuilder.followPath(path));
+    }
+
+    public Command alignWithSpeaker()
+    {
+        double tx = Constants.SpeakerConstants.speakerTargetX;
+        double ty = Constants.SpeakerConstants.speakerTargetY;
+        Rotation2d tRot = Rotation2d.fromDegrees(Constants.SpeakerConstants.speakerTargetRot);
+
+        Pose2d currPos = s_Swerve.getPose();
+
+        double currX = currPos.getX(); // Current X
+        double currY = currPos.getY(); // Current Y
+        Rotation2d currRot = currPos.getRotation();
+
+        List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+            new Pose2d(tx - currX, ty - currY, tRot.minus(currRot))
+        );
+
+        PathPlannerPath path = new PathPlannerPath(
+                bezierPoints,
+                new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI),
+                new GoalEndState(0.0, tRot)
+        );
+
+        path.preventFlipping = true;
         return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose())).andThen(AutoBuilder.followPath(path));
     }
 }
