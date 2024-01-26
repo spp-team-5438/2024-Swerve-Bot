@@ -71,7 +71,6 @@ public class Swerve extends SubsystemBase {
         );
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
-
         SmartDashboard.putData("Field", field);
     }
 
@@ -169,6 +168,7 @@ public class Swerve extends SubsystemBase {
     public void periodic()
     {
         swerveOdometry.update(getYaw(), getModulePositions());  
+        field.setRobotPose(getPose());
 
         for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber(

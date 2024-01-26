@@ -21,11 +21,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
+import frc.robot.commands.AlignWithSpeaker;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 
 /**
- * This class is where the bulk of the robot should be declared. Since 
+ * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
  * actually be handled in the {@link Robot} periodic methods (other than the
  * scheduler calls). Instead, the structure of the robot (including subsystems,
@@ -45,27 +47,31 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(
-        driver, XboxController.Button.kY.value);
+            driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(
-        driver, XboxController.Button.kLeftBumper.value);
-    
+            driver, XboxController.Button.kLeftBumper.value);
+
     private final JoystickButton followPathButton = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton alignWithSpeakerButton = new JoystickButton(driver, XboxController.Button.kA.value);
 
     /* Subsystems */
     public Limelight s_limelight = new Limelight();
     private final Swerve s_Swerve = new Swerve();
+    
+    /* Commands */
+    private AlignWithSpeaker alignWithSpeaker = new AlignWithSpeaker(s_limelight, s_Swerve);
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
-                () -> robotCentric.getAsBoolean()
-            )
-        );
+                new TeleopSwerve(
+                        s_Swerve,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> robotCentric.getAsBoolean()));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -77,9 +83,11 @@ public class RobotContainer {
     }
 
     /**
-     * Use this method to define your button->command mappings. Buttons can be created by
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+     * it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
@@ -87,7 +95,7 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         followPathButton.onTrue(followSamplePath("Straight Path"));
-        //alignWithSpeakerButton.onTrue(alignWithSpeaker());
+        alignWithSpeakerButton.onTrue(alignWithSpeaker);
     }
 
     /**
@@ -100,35 +108,40 @@ public class RobotContainer {
         return new exampleAuto(s_Swerve);
     }
 
-    public Command followSamplePath(String pathName)
-    {
+    public Command followSamplePath(String pathName) {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-        return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose())).andThen(AutoBuilder.followPath(path));
+        return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose()))
+                .andThen(AutoBuilder.followPath(path));
     }
 
-    public Command alignWithSpeaker()
-    {
-        double tx = Constants.SpeakerConstants.speakerTargetX;
-        double ty = Constants.SpeakerConstants.speakerTargetY;
-        Rotation2d tRot = Rotation2d.fromDegrees(Constants.SpeakerConstants.speakerTargetRot);
+    // public Command alignWithSpeaker(Limelight ll) {
+    //     double tx = Constants.SpeakerConstants.speakerTargetX;
+    //     double ty = Constants.SpeakerConstants.speakerTargetY;
+    //     Rotation2d tRot = Rotation2d.fromDegrees(Constants.SpeakerConstants.speakerTargetRot);
 
-        Pose2d currPos = s_Swerve.getPose();
+    //     double currX = ll.fieldSpacePosition[0]; // Current X
+    //     double currY = ll.fieldSpacePosition[1]; // Current Y
+    //     Rotation2d currRot = Rotation2d.fromDegrees(ll.fieldSpacePosition[5]);
 
-        double currX = currPos.getX(); // Current X
-        double currY = currPos.getY(); // Current Y
-        Rotation2d currRot = currPos.getRotation();
+    //     double dx = tx - currX;
+    //     double dy = ty - currY;
 
-        List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-            new Pose2d(tx - currX, ty - currY, tRot.minus(currRot))
-        );
+    //     Rotation2d dr = tRot.minus(currRot);
 
-        PathPlannerPath path = new PathPlannerPath(
-                bezierPoints,
-                new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI),
-                new GoalEndState(0.0, tRot)
-        );
+    //     SmartDashboard.putNumber("DX", dx);
+    //     SmartDashboard.putNumber("DY", dy);
 
-        path.preventFlipping = true;
-        return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose())).andThen(AutoBuilder.followPath(path));
-    }
+    //     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+    //             new Pose2d(dx * 0.5, dy * 0.5, dr.times(0.5)),
+    //             new Pose2d(dx, dy, dr));
+
+    //     PathPlannerPath path = new PathPlannerPath(
+    //             bezierPoints,
+    //             new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI),
+    //             new GoalEndState(0.0, tRot));
+
+    //     path.preventFlipping = true;
+    //     return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose()))
+    //             .andThen(AutoBuilder.followPath(path));
+    // }
 }
