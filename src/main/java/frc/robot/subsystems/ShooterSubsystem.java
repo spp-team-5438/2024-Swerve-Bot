@@ -21,22 +21,25 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public CANSparkMax speakerMotorTop = new CANSparkMax(Constants.shooterMotorTopID, MotorType.kBrushless);
     public CANSparkMax speakerMotorBottom = new CANSparkMax(Constants.shooterMotorBottomID, MotorType.kBrushless);
-    public CANSparkMax pistonMotor = new CANSparkMax(0, MotorType.kBrushless);
+    public CANSparkMax speakerMotorPivot = new CANSparkMax(0, MotorType.kBrushless);
 
-    private PIDController pistonPIDController = new PIDController(0, 0, 0);
-    private SparkMaxAbsoluteEncoder pistonEncoder = pistonMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    private PIDController pivotPIDController = new PIDController(0, 0, 0);
+    private SparkMaxAbsoluteEncoder pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
 
     // Amp Shooter-------------------------------------------------------------------------------------------------
 
     public CANSparkMax ampWheelMotor = new CANSparkMax(Constants.ampMotorID, MotorType.kBrushless);
     public CANSparkMax ampRotationMotor = new CANSparkMax(0, MotorType.kBrushless);
     
+    private SparkMaxAbsoluteEncoder ampEncoder = ampRotationMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    private PIDController ampPIDController = new PIDController(0, 0, 0);
+    
     //-------------------------------------------------------------------------------------------------------------
 
     public void setSpeakerAngle(double desiredAngle)
     {
-        double output = pistonPIDController.calculate(pistonEncoder.getPosition(), Conversions.degreesToSparkMax(desiredAngle, 0)); // TODO: Get gear ratio
-        pistonMotor.set(output);
+        double output = pivotPIDController.calculate(pivotEncoder.getPosition(), Conversions.degreesToSparkMax(desiredAngle, 0)); // TODO: Get gear ratio
+        speakerMotorPivot.set(output);
     }
 
     public double getSpeakerAngle()
@@ -53,12 +56,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getSpeakerMotor()
     {
-        return 0;
+     //   return speakerMotorBottom.get() + speakerMotorTop.get()
     }
 
-    public void setAmpAngle(double desiredSpeed)
+    public void setAmpAngle(double desiredAngle)
     {
-        ampRotationMotor.set(desiredSpeed);
+        double outputAngle = ampPIDController.calculate(ampEncoder.getPosition(), Conversions.degreesToSparkMax(desiredAngle, 0));
+        ampRotationMotor.set(outputAngle);
     }
 
     public double getAmpAngle()
