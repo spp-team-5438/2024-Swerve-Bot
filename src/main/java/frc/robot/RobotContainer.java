@@ -52,6 +52,7 @@ public class RobotContainer {
     private final JoystickButton followPathButton = new JoystickButton(driver, XboxController.Button.kX.value);
 
     /* Subsystems */
+    public Limelight s_limelight = new Limelight();
     private final Swerve s_Swerve = new Swerve();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
