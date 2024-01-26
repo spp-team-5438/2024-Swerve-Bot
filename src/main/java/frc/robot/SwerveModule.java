@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -96,7 +97,7 @@ public class SwerveModule {
 
         double output = anglePidController.calculate(
             mAngleEncoder.getPosition(), Conversions.degreesToSparkMax(
-                angle.getDegrees(),
+                MathUtil.inputModulus(angle.getDegrees(), 0, 360);
                 Constants.Swerve.angleGearRatio));
         mAngleMotor.set(output);
         lastAngle = angle;
