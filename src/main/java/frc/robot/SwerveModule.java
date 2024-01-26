@@ -97,7 +97,7 @@ public class SwerveModule {
 
         double output = anglePidController.calculate(
             mAngleEncoder.getPosition(), Conversions.degreesToSparkMax(
-                MathUtil.inputModulus(angle.getDegrees(), 0, 360);
+                MathUtil.inputModulus(angle.getDegrees(), 0, 360),
                 Constants.Swerve.angleGearRatio));
         mAngleMotor.set(output);
         lastAngle = angle;
