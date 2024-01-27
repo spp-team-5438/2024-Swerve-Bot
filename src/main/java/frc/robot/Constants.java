@@ -159,6 +159,8 @@ public final class Constants {
         public static final double speakerTargetX = 6.72;
         public static final double speakerTargetY = 1.26;
         public static final double speakerTargetRot = -88.6;
+        public static final int aprilTagCentralSpeaker = 3;
+        public static final int aprilTagOffsetSpeaker = 4;
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
