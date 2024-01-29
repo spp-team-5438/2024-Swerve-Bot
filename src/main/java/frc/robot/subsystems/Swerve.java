@@ -170,6 +170,13 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.update(getYaw(), getModulePositions());  
         field.setRobotPose(getPose());
 
+        int k = 0;
+        double[] offsets = {
+            Constants.Swerve.Mod0.angleOffset.getDegrees(),
+            Constants.Swerve.Mod1.angleOffset.getDegrees(),
+            Constants.Swerve.Mod2.angleOffset.getDegrees(),
+            Constants.Swerve.Mod3.angleOffset.getDegrees()
+        };
         for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber(
                 "Mod " + mod.moduleNumber + " AbsoluteEncoder",
@@ -186,6 +193,11 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber(
                 "Mod " + mod.moduleNumber + " Output",
                 mod.getOutput());
+            SmartDashboard.putNumber(
+                "Mod " + mod.moduleNumber + " Angle w/ offset",
+                mod.getAngle().getDegrees() + offsets[k]);
+
+            k++;
         }
     }
 }

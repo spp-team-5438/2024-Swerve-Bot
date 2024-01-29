@@ -11,6 +11,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -53,6 +54,7 @@ public class RobotContainer {
 
     private final JoystickButton followPathButton = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton alignWithSpeakerButton = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton moveForwardButton = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
     public Limelight s_limelight = new Limelight();
@@ -96,6 +98,7 @@ public class RobotContainer {
 
         followPathButton.onTrue(followSamplePath("Straight Path"));
         alignWithSpeakerButton.onTrue(alignWithSpeaker);
+        moveForwardButton.onTrue(new InstantCommand(() -> s_Swerve.driveRobotRelative(new ChassisSpeeds(0, 1, 0))));
     }
 
     /**
@@ -112,6 +115,10 @@ public class RobotContainer {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
         return Commands.runOnce(() -> s_Swerve.resetOdometry(path.getPreviewStartingHolonomicPose()))
                 .andThen(AutoBuilder.followPath(path));
+    }
+
+    public Command moveForward() {
+        return Commands.runOnce(() -> s_Swerve.drive(new Translation2d(0, 1), 0, false, false));
     }
 
     // public Command alignWithSpeaker(Limelight ll) {
