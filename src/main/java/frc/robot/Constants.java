@@ -18,6 +18,8 @@ public final class Constants {
     public static final int ampMotorID = 0;
     public static final class Shooter{
         public static final int height = 24; //height of shooter (inches)
+        public static final Rotation2d angleOffset = Rotation2d.fromDegrees();
+        public static final int pistonEncoderID = 0; //TODO: set encoder ID 
     }
 
     public static final class Swerve {

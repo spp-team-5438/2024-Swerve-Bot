@@ -44,6 +44,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     public final ShooterSubsystem shooter = new ShooterSubsystem();
+    shooter.onInit();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */

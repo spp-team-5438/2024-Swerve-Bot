@@ -23,8 +23,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public CANSparkMax speakerMotorBottom = new CANSparkMax(Constants.shooterMotorBottomID, MotorType.kBrushless);
     public CANSparkMax speakerMotorPivot = new CANSparkMax(0, MotorType.kBrushless);
 
-    private PIDController pivotPIDController = new PIDController(0, 0, 0);
-    private SparkMaxAbsoluteEncoder pivotEncoder = speakerMotorPivot.getAbsoluteEncoder(Type.kDutyCycle);
+    private PIDController pistonPIDController = new PIDController(0, 0, 0);
+    private DutyCycleEncoder pistonEncoder = new DutyCycleEncoder(Type.kDutyCycle);
 
     // Amp Shooter-------------------------------------------------------------------------------------------------
 
@@ -84,4 +84,12 @@ public class ShooterSubsystem extends SubsystemBase {
     {
         return new AutoAimCommand(this, 0); // TODO: Get distance from somewhere
     }
+
+    public Command onInit()
+    {
+        double absolutePosition = Conversions.degreesToSparkMax(
+            getEncoder().getDegrees() - Constants.Shooter.angleOffset.getDegrees(), Constants.Shooter.pistonMotorID);
+        pistonEncoder.setPosition(absolutePosition);
+    }
+
 }
